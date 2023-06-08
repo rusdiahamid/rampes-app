@@ -1,5 +1,13 @@
 import Image from 'next/image';
+import Navbar from './components/navbar/Navbar';
 
 export default function Home() {
-  return <h1>Main Page</h1>;
+  return (
+    <>
+      <Navbar />
+      <div className="flex justify-center h-screen items-center">
+        <h1 className="text-xl text-center ">Main Page</h1>
+      </div>
+    </>
+  );
 }
