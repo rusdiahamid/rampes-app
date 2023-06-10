@@ -3,6 +3,7 @@
 import { useCallback } from 'react';
 import Button from './Button';
 import Logo from './Logo';
+import Link from 'next/link';
 
 interface FormProps {
   onSubmit: () => void;
@@ -24,7 +25,9 @@ const Form: React.FC<FormProps> = ({ onSubmit, body, footer, actionLabel, disabl
   return (
     <div className="w-full md:w-3/4 flex flex-col justify-center">
       <div className="flex justify-center mb-5">
-        <Logo />
+        <Link href={'/'}>
+          <Logo />
+        </Link>
       </div>
       <div className="relative p-6 flex-auto">{body}</div>
       <div className="flex flex-col gap-2 p-6">

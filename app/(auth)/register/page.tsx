@@ -10,6 +10,8 @@ import Input from '@/app/components/inputs/Input';
 import Form from '@/app/components/Form';
 import axios from 'axios';
 import { Toaster, toast } from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -24,6 +26,8 @@ const Register = () => {
       password: '',
     },
   });
+
+  const router = useRouter();
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
@@ -59,7 +63,7 @@ const Register = () => {
       <div className="text-neutral-500 text-center mt-4 font-light">
         <div className="flex flex-row justify-center items-center gap-2">
           <div>Already have an account?</div>
-          <div onClick={() => {}} className="text-neutral-800 cursor-pointer hover:underline">
+          <div onClick={() => router.push('/login')} className="text-neutral-800 cursor-pointer hover:underline">
             Login
           </div>
         </div>
@@ -72,7 +76,7 @@ const Register = () => {
       <div className="flex flex-1 justify-center items-center">
         <Form body={bodyContent} footer={footerContent} onSubmit={handleSubmit(onSubmit)} actionLabel="Sign up" disabled={isLoading} />
       </div>
-      <div className="hidden flex-1 lg:flex bg-emerald-600"></div>
+      <div className="hidden flex-1 lg:flex bg-emerald-300"></div>
     </div>
   );
 };
