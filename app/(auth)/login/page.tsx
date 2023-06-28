@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { signIn } from 'next-auth/react';
 import { AiFillFacebook } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
@@ -21,7 +22,6 @@ const Login = () => {
     formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: {
-      name: '',
       email: '',
       password: '',
     },
@@ -32,24 +32,39 @@ const Login = () => {
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
 
-    axios
-      .post('http://127.0.0.1:8080/auth/login', data)
-      .then((response) => {
+    signIn('credentials', {
+      ...data,
+      redirect: false,
+    }).then((callback) => {
+      setIsLoading(false);
+
+      if (callback?.ok) {
         toast.success('Logged in');
-        console.log(response.data.authentication);
-        setCookie(null, 'RAMPES-SESSION', JSON.stringify(response.data.authentication.sessionToken), {
-          maxAge: 30 * 24 * 60 * 60,
-          path: '/',
-        });
-        router.push('/dashboard');
-      })
-      .catch((error) => {
-        console.error(error);
-        toast.error(error.response.data);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+        router.refresh();
+      }
+
+      if (callback?.error) {
+        toast.error(callback.error);
+      }
+    });
+    // axios
+    //   .post('http://127.0.0.1:8080/auth/login', data)
+    //   .then((response) => {
+    //     toast.success('Logged in');
+    //     console.log(response.data.authentication);
+    //     setCookie(null, 'RAMPES-SESSION', JSON.stringify(response.data.authentication.sessionToken), {
+    //       maxAge: 30 * 24 * 60 * 60,
+    //       path: '/',
+    //     });
+    //     router.push('/dashboard');
+    //   })
+    //   .catch((error) => {
+    //     console.error(error);
+    //     toast.error(error.response.data);
+    //   })
+    //   .finally(() => {
+    //     setIsLoading(false);
+    //   });
   };
 
   const bodyContent = (

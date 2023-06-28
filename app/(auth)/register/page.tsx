@@ -31,9 +31,10 @@ const Register = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
+    console.log(data);
 
     axios
-      .post('http://127.0.0.1:8080/auth/register', data)
+      .post('/api/register', data)
       .then((response) => {
         toast.success('Registered!');
       })
